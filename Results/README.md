@@ -69,14 +69,19 @@ kubectl get svc
 NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
 flask-service   NodePort    10.101.173.79   <none>        80:30007/TCP   46m
 ```
+![Pods, Deployments and Service Output](../images/pods_output.png)
+
 `flask-service` exposes your Flask app to outside Minikube on port `30007`. You can access it with:
 ```bash
 minikube service flask-service
 ```
+![Minikube Service Output](../images/minikube_service_output.png)
+
+![Final Output](../images/final_output.png)
 
 ---
 
-### Debugging: Deployment Configuration Update (Flask App on Minikube)
+## Debugging: Deployment Configuration Update (Flask App on Minikube)
 
 #### New Changes in `deployment.yaml`
 
