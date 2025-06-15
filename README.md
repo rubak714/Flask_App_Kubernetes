@@ -80,20 +80,31 @@ flowchart TD
 
 ---
 
-## Bakery Story Analogy
+### Bakery Story Analogy
 ```mermaid
 flowchart TD
-    A[Customer] --> B[Manager Desk (API Server)]
-    B --> C[Kitchen Supervisor (Scheduler)]
-    C --> D[Oven 1 (Node 1)]
-    C --> E[Oven 2 (Node 2)]
-    D --> F[Baking Tray 1 (Pod with Cake)]
-    E --> G[Baking Tray 2 (Pod with Cake)]
-    H[Server Window (Service)] --> F
-    H --> G
+    Customer --> ManagerDesk
+    ManagerDesk --> KitchenSupervisor
+    KitchenSupervisor --> Oven1
+    KitchenSupervisor --> Oven2
+    Oven1 --> Tray1
+    Oven2 --> Tray2
+    ServiceWindow --> Tray1
+    ServiceWindow --> Tray2
 ```
 
 ---
+
+### Legend (Mapping)
+| Kubernetes Term | Bakery Analogy           |
+|------------------|---------------------------|
+| Developer         | Customer                  |
+| API Server        | Manager Desk              |
+| Scheduler         | Kitchen Supervisor        |
+| Node              | Oven                      |
+| Pod               | Baking Tray               |
+| Container         | Cake (inside Tray)        |
+| Service           | Service Window (Server)   |
 
 ## 🔗 Interpreting the Kubernetes Block Diagram (same Bakery Story)
 
