@@ -7,14 +7,16 @@ Here’s what happened step-by-step to successfully deploy your Flask app to Kub
 ### Step 1: Connect Docker to Minikube’s Docker Daemon
 ```bash
 eval $(minikube docker-env)
-``` This ensures any image you build using `docker build` is available **inside Minikube’s Docker environment**, not your host. This avoids `ImagePullBackOff` errors.
+``` 
+This ensures any image you build using `docker build` is available **inside Minikube’s Docker environment**, not your host. This avoids `ImagePullBackOff` errors.
 
 ---
 
 ### Step 2: Build Docker Image
 ```bash
 docker build -t flask-cicd-app .
-``` The image `flask-cicd-app:latest` was built successfully **inside Minikube's Docker engine**.
+``` 
+The image `flask-cicd-app:latest` was built successfully **inside Minikube's Docker engine**.
 
 ---
 
@@ -28,7 +30,7 @@ This created a Deployment named `flask-app-deployment` using your custom Docker 
 ```yaml
 image: flask-cicd-app:latest
 ```
-- This line matches the image you built **locally inside Minikube**, so Kubernetes could find and run it.
+This line matches the image you built **locally inside Minikube**, so Kubernetes could find and run it.
 
 ---
 
