@@ -81,13 +81,14 @@ flowchart TD
 ### Bakery Story Analogy
 ```mermaid
 flowchart TD
-    A[Customer] -->|New Recipe| B[Manager's Desk (API Server)]
+    A[Customer] -->|New Recipe| B[Manager Desk (API Server)]
     B --> C[Kitchen Supervisor (Scheduler)]
     C --> D[Oven 1 (Node 1)]
     C --> E[Oven 2 (Node 2)]
     D -->|holds| F[Baking Tray 1 (Pod with Cake)]
     E -->|holds| G[Baking Tray 2 (Pod with Cake)]
-    H[Server Window (Service)] -->|serves from| F & G
+    H[Server Window (Service)] -->|serves from| F
+    H -->|serves from| G
 ```
 
 ## 🔗 Interpreting the Kubernetes Block Diagram (same Bakery Story)
