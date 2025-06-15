@@ -78,6 +78,18 @@ flowchart TD
     Service -->|Routes| Container1 & Container2
 ```
 
+### Bakery Story Analogy
+```mermaid
+flowchart TD
+    A[Customer] -->|New Recipe| B[Manager's Desk (API Server)]
+    B --> C[Kitchen Supervisor (Scheduler)]
+    C --> D[Oven 1 (Node 1)]
+    C --> E[Oven 2 (Node 2)]
+    D -->|holds| F[Baking Tray 1 (Pod with Cake)]
+    E -->|holds| G[Baking Tray 2 (Pod with Cake)]
+    H[Server Window (Service)] -->|serves from| F & G
+```
+
 ## 🔗 Interpreting the Kubernetes Block Diagram (same Bakery Story)
 
 Let's align the diagram interpretation with the earlier bakery analogy. This way, your understanding becomes seamless and vivid.
