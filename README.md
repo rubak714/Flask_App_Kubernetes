@@ -67,6 +67,8 @@ That’s CI/CD with Jenkins, Docker, and Kubernetes—deliciously automated. �
 
 ## 🔗 How Kubernetes Works: Visual Overview
 
+---
+
 ### Real Kubernetes Workflow
 ```mermaid
 flowchart TD
@@ -92,6 +94,8 @@ flowchart TD
     E -->|holds| G[Baking Tray 2 (Pod with Cake)]
     H[Server Window (Service)] -->|serves from| F & G
 ```
+
+---
 
 ## 🔗 Interpreting the Kubernetes Block Diagram (same Bakery Story)
 
