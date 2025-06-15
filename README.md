@@ -234,6 +234,7 @@ spec:
       containers:
       - name: flask-container
         image: flask-cicd-app:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 5000
         readinessProbe:
