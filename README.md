@@ -39,7 +39,7 @@ So in short:
 * **Jenny (Jenkins)** = Task manager who listens for cake orders (code updates) and runs the kitchen.
 * **Docker** = Magic oven that builds cakes (containers) from recipes (code).
 * **Kube (Kubernetes)** = Cake distribution system that makes sure all customers get cakes, replaces bad ones, and scales if orders increase.
-Kube (Kubernetes) --> Container orchestration system/ Workload Orchestrator/ Cluster Manager/ Container Management Platform/ Distributed Systems Controller
+* **Other names of Kube (Kubernetes)** --> Container orchestration system/ Workload Orchestrator/ Cluster Manager/ Container Management Platform/ Distributed Systems Controller
 
 All Jenny has to do is:
 
