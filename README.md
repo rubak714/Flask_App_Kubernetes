@@ -67,35 +67,16 @@ That’s CI/CD with Jenkins, Docker, and Kubernetes—deliciously automated. �
 
 ## 🔗 How Kubernetes Works: Visual Overview
 
----
-
-### Real Kubernetes Workflow
 ```mermaid
 flowchart TD
-    A[Developer] -->|kubectl apply| B[API Server]
-    B --> C[Scheduler]
-    C --> D[Node 1]
-    C --> E[Node 2]
-    D -->|runs| F[Pod 1 (Container)]
-    E -->|runs| G[Pod 2 (Container)]
-    H[Service] -->|routes to| F & G
+    User -->|kubectl apply| API[API Server]
+    API --> Scheduler
+    Scheduler --> Node1
+    Scheduler --> Node2
+    Node1 -->|Pods| Container1
+    Node2 -->|Pods| Container2
+    Service -->|Routes| Container1 & Container2
 ```
-
----
-
-### Bakery Story Analogy
-```mermaid
-flowchart TD
-    A[Customer] -->|New Recipe| B[Manager's Desk (API Server)]
-    B --> C[Kitchen Supervisor (Scheduler)]
-    C --> D[Oven 1 (Node 1)]
-    C --> E[Oven 2 (Node 2)]
-    D -->|holds| F[Baking Tray 1 (Pod with Cake)]
-    E -->|holds| G[Baking Tray 2 (Pod with Cake)]
-    H[Server Window (Service)] -->|serves from| F & G
-```
-
----
 
 ## 🔗 Interpreting the Kubernetes Block Diagram (same Bakery Story)
 
