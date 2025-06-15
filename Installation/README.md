@@ -1,3 +1,64 @@
+## Installing Minikube on Linux (Recommended Order: Install Minikube first)
+
+Minikube lets you run a local Kubernetes cluster for testing and development.
+
+### Prerequisites
+- Docker or VirtualBox installed
+- curl, sudo access
+
+---
+
+### Step-by-Step Installation
+
+#### 1. Download Minikube binary:
+```bash
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+```
+
+#### 2. Install it to `/usr/local/bin`:
+```bash
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+```
+
+#### 3. Verify Installation:
+```bash
+minikube version
+```
+
+---
+
+### Start Minikube with Docker driver
+```bash
+minikube start --driver=docker
+```
+This starts a local Kubernetes cluster using Docker as the backend.
+
+You should see logs showing the creation of the Kubernetes control plane.
+
+---
+
+If you haven’t installed kubectl globally, you can still run:
+
+bash
+```bash
+minikube kubectl -- get pods -A
+```
+This helps verify that your cluster is working before deciding on global tools.
+
+### Test the Setup
+```bash
+kubectl get nodes
+```
+Expected output:
+| NODE NAME | STATUS | ROLES         | VERSION  |
+|-----------|--------|---------------|----------|
+| minikube  | Ready  | control-plane | v1.33.1  |
+
+If this appears, your Minikube cluster is running successfully!
+
+---
+
+
 ## Installing and Using `kubectl` with Minikube
 
 ### Option 1: Install `kubectl` Globally (Recommended)
@@ -76,4 +137,4 @@ This confirms that `kubectl` is currently pointing to your local Minikube cluste
 
 ---
 
-Let me know if you want to deploy your first app or set up the Minikube dashboard!
+
