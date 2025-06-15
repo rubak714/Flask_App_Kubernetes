@@ -98,7 +98,7 @@ Now, let’s interpret each step as a story:
 
 ---
 
-### 🔹 1. User ➡️ API Server (`kubectl apply`)
+### 🔹 1. User → API Server (`kubectl apply`)
 
 **Story:** Think of the user as a customer placing a food order.
 
@@ -108,7 +108,7 @@ Now, let’s interpret each step as a story:
 
 ---
 
-### 🔹 2. API Server ➡️ Scheduler
+### 🔹 2. API Server → Scheduler
 
 **Story:** The API Server is like the kitchen receptionist. She takes your order and passes it to the Chef Scheduler, who decides which chef (Node) should prepare your meal.
 
@@ -118,7 +118,7 @@ Now, let’s interpret each step as a story:
 
 ---
 
-### 🔹 3. Scheduler ➡️ Node1 and Node2
+### 🔹 3. Scheduler → Node1 and Node2
 
 **Story:** The Scheduler assigns different parts of the order to available chefs in different stations (Node1 and Node2).
 
@@ -128,7 +128,7 @@ Now, let’s interpret each step as a story:
 
 ---
 
-### 🔹 Node1 and Node2 ➡️ Pods ➡️ Containers
+### 🔹 Node1 and Node2 → Pods → Containers
 
 **Story:** Each chef (Node) runs cooking stations (Pods) where the actual dishes (Containers) are made.
 
@@ -138,7 +138,7 @@ Now, let’s interpret each step as a story:
 
 ---
 
-### 🔹 Service ➡️ Routes to Container1 & Container2
+### 🔹 Service → Routes to Container1 & Container2
 
 **Story:** Once the food is ready, the waiter (Service) brings it to your table, whether it was cooked in Station 1 or Station 2.
 
