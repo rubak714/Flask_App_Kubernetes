@@ -287,6 +287,8 @@ docker build -t flask-cicd-app .
 
 ## 🔗 Deploy Flask App to Kubernetes
 
+[Installation of minikube and kubectl is here](./Installation/README.md)
+
 ```bash
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
