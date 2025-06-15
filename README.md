@@ -30,7 +30,7 @@ Now, here’s the problem: Jenny’s bakery gets *a lot* of cake orders. She can
 
 Jenny (Jenkins) gives the finished cake (Docker container) to Kube. She also gives Kube a piece of paper with clear instructions: "Make 3 copies of this cake, keep them fresh, and if any go bad, replace them!" This paper is called a deployment.yaml.
 
-Kube reads the instructions and sends the cakes to his robots (Pods) who live in different ovens (Nodes). These robots serve the cakes to hungry customers through a service window (called a Service).
+Kube reads the instructions and sends the cakes to trays (Pods) placed in different ovens (Nodes). These trays present the cakes to hungry customers through a service window (called a Service).
 
 And guess what? If one of the robots drops a cake, Kubernetes quickly bakes a new one without asking Jenny!
 
