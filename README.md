@@ -176,26 +176,7 @@ stage('Deploy to Kubernetes') {
 
 ---
 
-## 🔗 Visual Workflow Overview
-
-```mermaid
-sequenceDiagram
-  participant Dev as Developer
-  participant Git as GitHub
-  participant Jenkins as Jenkins
-  participant K8s as Kubernetes
-  participant User as End User
-
-  Dev->>Git: Push code
-  Git->>Jenkins: Trigger Pipeline
-  Jenkins->>Docker: Build Image
-  Jenkins->>K8s: Deploy YAML
-  K8s->>User: Expose via Service
-```
-
----
-
-# 🔗 Visual Workflow Interpretation
+## 🔗 Visual Workflow Interpretation
 
 This section provides a breakdown of the visual workflow represented in the Mermaid diagram from the project. Each interaction between components is explained to clarify how the CI/CD pipeline works in practice.
 
@@ -218,14 +199,13 @@ sequenceDiagram
   Jenkins->>K8s: Deploy YAML
   K8s->>User: Expose via Service
 ```
-
 ---
 
-## 🔍 Step-by-Step Interpretation
+## Step-by-Step Interpretation
 
 ### 1. `Dev ->> Git: Push code`
 
-* **What it means:** The developer writes code (e.g., Flask app) and pushes it to a GitHub repository.
+* **What it means:** The developer writes code (for example, Flask app) and pushes it to a GitHub repository.
 * **Why it's important:** This push acts as the trigger for the entire CI/CD pipeline.
 
 ---
@@ -258,7 +238,7 @@ sequenceDiagram
 
 ---
 
-## ✅ Summary Table
+## Summary Table
 
 | Actor      | Role                                |
 | ---------- | ----------------------------------- |
