@@ -87,7 +87,7 @@ kind: Deployment
 metadata:
   name: flask-app-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: flask-app
@@ -97,10 +97,22 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: flask-app
-        image: flask-cicd-app
+      - name: flask-container
+        image: flask-cicd-app:latest
         ports:
         - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20
 ```
 
 ### `k8s/service.yaml`
@@ -118,7 +130,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5000
-      nodePort: 30036
+      nodePort: 30007
 ```
 
 ---
@@ -253,6 +265,211 @@ sequenceDiagram
 
 > This interpretation helps reinforce the understanding of each component’s role in a modern DevOps CI/CD pipeline.
 
+---
+
+### What to Do Every Time You Reboot Ubuntu
+
+```bash
+sudo systemctl start docker  # Ensure Docker is running
+
+docker start jenkins         # Start your custom Jenkins container
+```
+
+To verify Jenkins:
+
+```bash
+docker ps  # Look for "jenkins" container running
+```
+
+Then open Jenkins in the browser:
+
+```text
+http://localhost:8080
+```
+
+---
+
+### Step-by-Step: Integrating Kubernetes (Minikube or Kind)
+
+If you don’t have Kubernetes installed yet, choose one of these lightweight options:
+
+#### Option A: Install Minikube
+
+```bash
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube start --driver=docker
+```
+
+#### Option B: Install Kind (Kubernetes IN Docker)
+
+```bash
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+
+Create a cluster:
+
+```bash
+kind create cluster
+```
+
+---
+
+### Connect Jenkins to Kubernetes
+
+#### Option 1: Run `kubectl` from Jenkins container
+
+1. Install `kubectl` on your host:
+
+   ```bash
+   sudo apt install -y kubectl
+   ```
+
+2. Mount your Kube config into Jenkins container:
+
+   ```bash
+   docker run -d \
+     --name jenkins \
+     -p 8080:8080 -p 50000:50000 \
+     -v jenkins_home:/var/jenkins_home \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     -v $HOME/.kube:/root/.kube \
+     my-jenkins-docker
+   ```
+
+3. Add a pipeline stage in Jenkinsfile:
+
+   ```groovy
+   stage('Deploy to Kubernetes') {
+     steps {
+       script {
+         sh 'kubectl apply -f deployment.yaml'
+       }
+     }
+   }
+   ```
+
+#### Option 2: Use Kubernetes Jenkins Plugin (Advanced)
+
+* Install the Kubernetes plugin in Jenkins UI
+* Configure cloud credentials for K8s access
+* Use a `kubernetes` agent in Jenkinsfile
+
+---
+
+### Example: Full Jenkinsfile with Kubernetes Deploy Stage
+
+```groovy
+pipeline {
+  agent any
+
+  environment {
+    IMAGE_NAME = "flask-cicd-app"
+    CONTAINER_NAME = "flask_app"
+  }
+
+  stages {
+    stage('Build Docker Image') {
+      steps {
+        script {
+          sh 'docker build -t $IMAGE_NAME .'
+        }
+      }
+    }
+
+    stage('Stop Existing Container') {
+      steps {
+        script {
+          sh "docker ps -q --filter name=$CONTAINER_NAME | grep -q . && docker rm -f $CONTAINER_NAME || true"
+        }
+      }
+    }
+
+    stage('Run Docker Container') {
+      steps {
+        script {
+          sh "docker run -d -p 5000:5000 --name $CONTAINER_NAME $IMAGE_NAME"
+        }
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        script {
+          sh 'kubectl apply -f deployment.yaml'
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+### Final Checkpoints
+
+* [x] Docker daemon is running
+* [x] Jenkins container is started using custom image
+* [x] K8s (Minikube or Kind) is up and running
+* [x] Jenkins has access to `kubectl`
+* [x] Jenkinsfile includes Kubernetes deploy stage
+
+---
+
+## Final Step: Kubernetes Deployment & Rollback Support (Minikube) (Optional) 
+
+Here’s everything you need to complete your CI/CD pipeline with **Kubernetes deployment**, **Service exposure** and **optional rollback scripting**.
+
+---
+
+Check app access:
+
+```bash
+minikube service flask-service --url
+```
+
+---
+
+### 3. Optional: Add Health Check + Rollback Logic
+
+Extend `deployment.yaml` with health checks:
+
+```yaml
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+```
+
+Add a rollback script in Jenkinsfile:
+
+```groovy
+stage('Health Check and Rollback') {
+  steps {
+    script {
+      def status = sh(script: "kubectl get pods | grep flask-app | grep Running | wc -l", returnStdout: true).trim()
+      if (status != '1') {
+        echo 'Deployment failed. Rolling back...'
+        sh 'kubectl rollout undo deployment/flask-app-deployment'
+      } else {
+        echo 'Deployment healthy.'
+      }
+    }
+  }
+}
+```
+
+---
 
 ## 🔗 What’s Next?
 
