@@ -195,6 +195,85 @@ sequenceDiagram
 
 ---
 
+# 🔗 Visual Workflow Interpretation
+
+This section provides a breakdown of the visual workflow represented in the Mermaid diagram from the project. Each interaction between components is explained to clarify how the CI/CD pipeline works in practice.
+
+---
+
+## 🔗 Mermaid Diagram
+
+```mermaid
+sequenceDiagram
+  participant Dev as Developer
+  participant Git as GitHub
+  participant Jenkins as Jenkins
+  participant Docker as Docker
+  participant K8s as Kubernetes
+  participant User as End User
+
+  Dev->>Git: Push code
+  Git->>Jenkins: Trigger Pipeline
+  Jenkins->>Docker: Build Image
+  Jenkins->>K8s: Deploy YAML
+  K8s->>User: Expose via Service
+```
+
+---
+
+## 🔍 Step-by-Step Interpretation
+
+### 1. `Dev ->> Git: Push code`
+
+* **What it means:** The developer writes code (e.g., Flask app) and pushes it to a GitHub repository.
+* **Why it's important:** This push acts as the trigger for the entire CI/CD pipeline.
+
+---
+
+### 2. `Git ->> Jenkins: Trigger Pipeline`
+
+* **What it means:** GitHub notifies Jenkins (via webhook or polling) that new code has been pushed.
+* **Why it's important:** Jenkins needs to know when to start the CI/CD process based on code changes.
+
+---
+
+### 3. `Jenkins ->> Docker: Build Image`
+
+* **What it means:** Jenkins executes a pipeline stage that runs `docker build` to create a Docker image of the Flask app.
+* **Why it's important:** Containerizing the app ensures consistent environments for testing and deployment.
+
+---
+
+### 4. `Jenkins ->> K8s: Deploy YAML`
+
+* **What it means:** Jenkins applies Kubernetes manifests (`deployment.yaml`, `service.yaml`) using `kubectl apply`.
+* **Why it's important:** This step deploys the containerized app into the Kubernetes cluster.
+
+---
+
+### 5. `K8s ->> User: Expose via Service`
+
+* **What it means:** Kubernetes exposes the deployed app to users via a `Service`, such as NodePort or LoadBalancer.
+* **Why it's important:** This allows users to access the app through a browser or API endpoint.
+
+---
+
+## ✅ Summary Table
+
+| Actor      | Role                                |
+| ---------- | ----------------------------------- |
+| Developer  | Writes and pushes code              |
+| GitHub     | Triggers Jenkins when code changes  |
+| Jenkins    | Automates CI/CD tasks               |
+| Docker     | Containerizes the app               |
+| Kubernetes | Orchestrates and runs the container |
+| User       | Accesses the live application       |
+
+---
+
+> This interpretation helps reinforce the understanding of each component’s role in a modern DevOps CI/CD pipeline.
+
+
 ## 🔗 What’s Next?
 
 * Add Helm charts for reusability
