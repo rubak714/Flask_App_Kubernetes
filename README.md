@@ -17,7 +17,9 @@ This guide walks you through extending your CI/CD Flask project by deploying it 
 
 ---
 
-### Are you confused now?
+## ***Are you confused now?***
+Don't worry!!! I went through that phase also.
+
 Let's read this story to make every connections clear!
 
 Imagine a tiny bakery run by a very busy baker named Jenny (that’s **Jenkins**!). She gets orders from her customers (developers) through a message board called **GitHub**. Whenever a customer posts a new cake recipe on the board (pushes code), Jenny rushes to the kitchen to get baking.
