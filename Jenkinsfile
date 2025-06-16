@@ -12,7 +12,7 @@ pipeline {
       steps {
         script {
           sh 'docker version' // Ensure Docker is accessible
-          sh "docker build -t $IMAGE_NAME $DOCKERFILE_DIR"
+          sh "docker build -t $IMAGE_NAME ."
         }
       }
     }
