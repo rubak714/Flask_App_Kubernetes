@@ -4,6 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = "flask-cicd-app"
     CONTAINER_NAME = "flask_app"
+    KUBECONFIG_PATH = "/var/jenkins_home/.kube/config"
   }
 
   stages {
@@ -11,7 +12,7 @@ pipeline {
       steps {
         script {
           sh 'docker version' // Confirm Docker is accessible
-          sh 'docker build -t $IMAGE_NAME .' // Builds from the Jenkins workspace root
+          sh "docker build -t $IMAGE_NAME ." // Builds from the Jenkins workspace root
         }
       }
     }
@@ -42,8 +43,8 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          sh 'kubectl apply -f k8s/deployment.yaml'
-          sh 'kubectl apply -f k8s/service.yaml'
+          sh "kubectl --kubeconfig=$KUBECONFIG_PATH apply -f k8s/deployment.yaml"
+          sh "kubectl --kubeconfig=$KUBECONFIG_PATH apply -f k8s/service.yaml"
         }
       }
     }
@@ -51,10 +52,10 @@ pipeline {
     stage('Health Check and Rollback') {
       steps {
         script {
-          def status = sh(script: "kubectl get pods | grep flask-app | grep Running | wc -l", returnStdout: true).trim()
+          def status = sh(script: "kubectl --kubeconfig=$KUBECONFIG_PATH get pods | grep flask-app | grep Running | wc -l", returnStdout: true).trim()
           if (status != '1') {
             echo 'Deployment failed. Rolling back...'
-            sh 'kubectl rollout undo deployment/flask-app-deployment'
+            sh "kubectl --kubeconfig=$KUBECONFIG_PATH rollout undo deployment/flask-app-deployment"
           } else {
             echo 'Deployment healthy.'
           }
@@ -62,7 +63,6 @@ pipeline {
       }
     }
 
-    // Optional Debug Stage
     stage('Debug Containers') {
       steps {
         script {
