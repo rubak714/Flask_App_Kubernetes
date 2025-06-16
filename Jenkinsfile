@@ -4,15 +4,14 @@ pipeline {
   environment {
     IMAGE_NAME = "flask-cicd-app"
     CONTAINER_NAME = "flask_app"
-    DOCKERFILE_DIR = "/home/rubaiya/Desktop/devops_github/Flask_App_Kubernetes"
   }
 
   stages {
     stage('Build Docker Image') {
       steps {
         script {
-          sh 'docker version' // Ensure Docker is accessible
-          sh "docker build -t $IMAGE_NAME ."
+          sh 'docker version' // Confirm Docker is accessible
+          sh 'docker build -t $IMAGE_NAME .' // Builds from the Jenkins workspace root
         }
       }
     }
@@ -20,7 +19,14 @@ pipeline {
     stage('Stop Existing Container') {
       steps {
         script {
-          sh "docker ps -q --filter name=$CONTAINER_NAME | grep -q . && docker rm -f $CONTAINER_NAME || true"
+          sh '''
+            if [ "$(docker ps -aq -f name=^flask_app$)" ]; then
+              echo "Removing existing container..."
+              docker rm -f flask_app
+            else
+              echo "No existing container found."
+            fi
+          '''
         }
       }
     }
@@ -36,8 +42,8 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          sh 'kubectl apply -f /home/rubaiya/Desktop/devops_github/Flask_App_Kubernetes/k8s/deployment.yaml'
-          sh 'kubectl apply -f /home/rubaiya/Desktop/devops_github/Flask_App_Kubernetes/k8s/service.yaml'
+          sh 'kubectl apply -f k8s/deployment.yaml'
+          sh 'kubectl apply -f k8s/service.yaml'
         }
       }
     }
@@ -55,14 +61,23 @@ pipeline {
         }
       }
     }
+
+    // Optional Debug Stage
+    stage('Debug Containers') {
+      steps {
+        script {
+          sh 'docker ps -a'
+        }
+      }
+    }
   }
 
   post {
     success {
-      echo 'Pipeline completed!'
+      echo '✅ Pipeline completed!'
     }
     failure {
-      echo 'Pipeline failed!'
+      echo '❌ Pipeline failed!'
     }
   }
 }
